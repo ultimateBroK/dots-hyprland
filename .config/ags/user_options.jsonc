@@ -15,5 +15,16 @@
 // "workspaces": {"shown": 8 }
 //
 {
-    
+    "sidebar": {
+        "pages": {
+            "apis": {
+                "defaultPage": "gemini",
+                "order": [
+                    "gemini",
+                    "gpt"
+                ]
+            },
+            "defaultPage": "apis"
+        }
+    }
 }

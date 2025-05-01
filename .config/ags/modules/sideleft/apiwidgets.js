@@ -9,10 +9,8 @@ import GPTService from '../../services/gpt.js';
 import Gemini from '../../services/gemini.js';
 import { GeminiView, geminiCommands, sendMessage as geminiSendMessage, geminiTabIcon } from './apis/gemini.js';
 import { ChatGPTView, chatGPTCommands, sendMessage as chatGPTSendMessage, chatGPTTabIcon } from './apis/chatgpt.js';
-import { WaifuView, waifuCommands, sendMessage as waifuSendMessage, waifuTabIcon } from './apis/waifu.js';
-import { BooruView, booruCommands, sendMessage as booruSendMessage, booruTabIcon } from './apis/booru.js';
 import { enableClickthrough } from "../.widgetutils/clickthrough.js";
-import { checkKeybind } from '../.widgetutils/keybind.js';
+import { checkKeybind } from "../.widgetutils/keybind.js";
 const TextView = Widget.subclass(Gtk.TextView, "AgsTextView");
 
 import { widgetContent } from './sideleft.js';
@@ -86,22 +84,6 @@ const APILIST = {
         "tabIcon": chatGPTTabIcon,
         "placeholderText": getString('Message the model...'),
     },
-    'waifu': {
-        "name": 'Waifus',
-        "sendCommand": waifuSendMessage,
-        "contentWidget": WaifuView(chatEntry),
-        "commandBar": waifuCommands,
-        "tabIcon": waifuTabIcon,
-        "placeholderText": getString('Enter tags'),
-    },
-    'booru': {
-        "name": 'Booru',
-        "sendCommand": booruSendMessage,
-        "contentWidget": BooruView(chatEntry),
-        "commandBar": booruCommands,
-        "tabIcon": booruTabIcon,
-        "placeholderText": getString('Enter tags and/or page number'),
-    },
 }
 const APIS = userOptions.sidebar.pages.apis.order.map((apiName) => {
     const obj = { ...APILIST[apiName] };
@@ -117,10 +99,7 @@ function apiSendMessage(textView) {
     const text = buffer.get_text(start, end, true).trimStart();
     if (!text || text.length == 0) return;
     // Send
-    if (APIS[currentApiId].name == APILIST['booru'].name)
-        APIS[currentApiId].sendCommand(text, APILIST['booru'].contentWidget)
-    else
-        APIS[currentApiId].sendCommand(text)
+    APIS[currentApiId].sendCommand(text);
     // Reset
     buffer.set_text("", -1);
     chatEntryWrapper.toggleClassName('sidebar-chat-wrapper-extended', false);
